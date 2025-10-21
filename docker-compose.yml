@@ -1,0 +1,29 @@
+# docker-compose.yml
+services:
+  aggregator:
+    build: .
+    image: uts-aggregator:latest
+    ports: ["8089:8080"]     # host 8089 -> container 8080
+    environment:
+      - PORT=8080            # pastikan uvicorn listen di 8080 internal
+      - WORKERS=2
+      - DB_PATH=/app/data/aggregator.db
+    volumes:
+      - aggdata:/app/data
+
+  # publisher demo penembak duplikasi
+  publisher:
+    image: curlimages/curl:8.9.1
+    depends_on: [aggregator]
+    entrypoint:
+      - sh
+      - -c
+      - |
+        sleep 2
+        for i in 1 2 3; do
+          curl -s -X POST "http://aggregator:8080/_demo/publish_dup?topic=demo.v1&base_id=DEMO-42&copies=5"
+        done
+        tail -f /dev/null
+
+volumes:
+  aggdata: {}
