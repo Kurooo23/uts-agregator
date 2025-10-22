@@ -34,7 +34,7 @@ Keputusan Desain
 5. Ketahanan Restart — SQLite yang persisten memastikan bahwa event yang sama tetap ditolak setelah sistem direstart.
 6. Kinerja — asyncio.Queue memisahkan proses ingest dari commit, mengurangi tail latency pada saat burst. Konfigurasi worker dapat ditingkatkan.
 
-Keterkaitan Teori
+Keterkaitan Teori (ringkasan dari pdf):
 1. Bab 1 — Karakteristik & Trade-off: Sistem terdistribusi memerlukan resource sharing, scalability, dan toleransi terhadap kegagalan parsial; transparansi vs performa merupakan trade-off klasik dalam desain Pub-Sub. (Tanenbaum & Van Steen, 2023).
 2. Bab 2 — Arsitektur: Pub-Sub menawarkan decoupling (ruang/waktu) dibandingkan dengan client-server, sehingga cocok untuk log yang bersifat bursty dan fan-out multi-subscriber.
 3. Bab 3 — Komunikasi: At-least-once lazim terjadi karena mekanisme retry/ack; exactly-once dapat dicapai secara praktis melalui idempotensi & deduplikasi pada tingkat aplikasi.
@@ -64,4 +64,4 @@ Beban Uji
   - Kirim batch size 500 untuk menstabilkan memori.
   - Uji persistensi: restart server, kirim kembali ID yang sama → tetap drop.
 
-Hasil Uji
+Link Video yt: https://youtu.be/Teq9NThUwY4
